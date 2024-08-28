@@ -3,6 +3,8 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { Link, useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -15,6 +17,7 @@ const Login = () => {
     };
 
     const [loading, setLoading] = useState(false);
+    const navigate =useNavigate();
 
     const loginHandler = async (e) => {
         e.preventDefault();
@@ -32,6 +35,7 @@ const Login = () => {
             });
 
             if (res.data.Success) {
+                navigate('/')
                 toast.success(res.data.message);
                 setInput({
                     email: '',
@@ -81,9 +85,21 @@ const Login = () => {
                         className='focus-visible:ring-transparent py-2'
                     />
                 </div>
-                <Button type='submit' disabled={loading}>
-                    {loading ? 'Logging in...' : 'Login'}
+                {
+                loading ? (
+                    <Button>
+                        <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
+                            please wait ..
+                        
+                    </Button>
+                ):(
+                    <Button type='submit'  >
+                     Login
                 </Button>
+                )
+            }
+                
+                <span className='text-center'>Register your account ? <Link to='/register' className='text-blue-500'>Signup</Link></span>
             </form>
         </div>
     );
