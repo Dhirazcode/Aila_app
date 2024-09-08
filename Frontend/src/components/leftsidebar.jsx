@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
@@ -7,12 +7,14 @@ import {  Heart, Home, LogOut, MessageCircle, PlusCircle, Search, TrendingUp } f
 import { useDispatch, useSelector } from 'react-redux';
 import store from '@/Redux/store';
 import { setAuthUser } from '@/Redux/authSlice';
+import CreatePost from './ui/createPost';
 
 
 
 const LeftSidebar = () => {
    const navigate = useNavigate();
    const dispatch=useDispatch();
+   const [open , setOpen]=useState(false)
    const {user} =useSelector(store=>store.auth)
 const logOuthandler = async () => {
     try {
@@ -32,7 +34,11 @@ const logOuthandler = async () => {
 
 
     const sidebarhandler = (textType) => {
-        if (textType == 'Logout') logOuthandler();
+        if (textType == 'Logout') {
+            logOuthandler();
+        } else if (textType=='Create'){
+           setOpen(true)
+        }
     };
     const sidebarItems = [
         { icon: <Home />, text: 'Home' },
@@ -69,6 +75,7 @@ const logOuthandler = async () => {
                     ))}
                 </div>
             </div>
+            <CreatePost open={open} setOpen={setOpen}/>
         </div>
     );
 };
