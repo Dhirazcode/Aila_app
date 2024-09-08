@@ -26,29 +26,29 @@ const sidebarItems = [
 
 const LeftSidebar = () => {
    const navigate = useNavigate();
-   console.log(navigate)
+const logOuthandler = async () => {
+    try {
+        const res = await axios.get('http://localhost:8000/api/v1/user/logout', { withCredentials: true });
+        console.log(res, "res");
+        if (res.data.Success) {
+            toast.success(res.data.message);
+            navigate('/login');
 
-    const logOuthandler = async () => {
-        try {
-            const res = await axios.get('http://localhost:8000/api/v1/user/logout', { withCredentials: true });
-            // console.log(res)
-            if (res.data.success) {
-                navigate.get("/login");
-                toast.success(res.data.message);
-            }
-        } catch (error) {
-            toast.error(error.response.data.message);
         }
-    };
+    } catch (error) {
+        toast.error(error.response?.data?.message || 'Logout failed');
+    }
+};
+
 
     const sidebarhandler = (textType) => {
-        if (textType === 'Logout') logOuthandler();
+        if (textType == 'Logout') logOuthandler();
     };
 
     return (
         <div className="fixed top-0 w-[16%] z-10 px-4 left-0 border-r border-gray-300 h-screen">
             <div className="flex flex-col">
-                <h1>LOGO</h1>
+                <h1 className='my-8 font-bold pl-3 text-xl'>LOGO</h1>
                 <div>
                     {sidebarItems.map((item, index) => (
                         <div
