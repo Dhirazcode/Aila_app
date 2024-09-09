@@ -29,8 +29,9 @@ const CreatePost = ({ open, setOpen }) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('caption', caption);
-
     if (file) formData.append('image', file);
+
+    console.log([...formData]); // Logs form data to verify it contains the file and caption
 
     try {
       setLoading(true);
@@ -43,7 +44,7 @@ const CreatePost = ({ open, setOpen }) => {
 
       if (res.data.success) {
         toast.success(res.data.message);
-        // setOpen(false); // Close dialog after successful post
+        setOpen(false); // Close dialog after successful post
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'An unexpected error occurred.');
