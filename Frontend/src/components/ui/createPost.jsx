@@ -8,6 +8,8 @@ import { readFileAsDataURl } from '@/lib/utils.js';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPosts } from '@/Redux/postSlice';
 
 const CreatePost = ({ open, setOpen }) => {
   const imageref = useRef();
@@ -15,6 +17,9 @@ const CreatePost = ({ open, setOpen }) => {
   const [caption, setCaption] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
+  const {user} =useSelector(store=>store.auth)
+  const dispatch =useDispatch()
+  const {posts} = useSelector(store=>store.post)
 
   const eventFileHandler = async (e) => {
     const file = e.target.files?.[0];
@@ -43,8 +48,9 @@ const CreatePost = ({ open, setOpen }) => {
       });
 
       if (res.data.success) {
+        dispatch(setPosts([res.data.post,...posts]));
         toast.success(res.data.message);
-        setOpen(false); // Close dialog after successful post
+        setOpen(false);  
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'An unexpected error occurred.');
@@ -59,11 +65,11 @@ const CreatePost = ({ open, setOpen }) => {
         <DialogHeader className='text-center font-bold'>Create new Post</DialogHeader>
         <div className='flex items-center gap-3'>
           <Avatar>
-            <AvatarImage src='' alt='User avatar' />
+            <AvatarImage className='w-10 h-10 object-cover rounded-full' src={user?.ProfilePicture} alt='User avatar' />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className='font-semibold text-xs'>Username</h1>
+            <h1 className='font-semibold text-xs'>{user?.Username}</h1>
             <span className='text-gray-600 text-xs'>Bio here...</span>
           </div>
         </div>

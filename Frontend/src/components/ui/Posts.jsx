@@ -5,9 +5,10 @@ import { useSelector } from 'react-redux';
 const Posts = () => {
     const { posts } = useSelector(store => store.post);
 
+    // Ensure posts is an array
     return (
         <div>
-            {posts.map((post) => (
+            {(Array.isArray(posts) ? posts : []).map((post) => (
                 <Post key={post._id} post={post} />
             ))}
         </div>
