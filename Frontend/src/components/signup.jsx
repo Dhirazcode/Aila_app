@@ -17,35 +17,36 @@ const signup = () => {
         setInput({ ...input, [e.target.name]: e.target.value })
     }
     const [loading, setLoading] = useState(false);
-    const nagivate =useNavigate();
+    const navigate =useNavigate();
     const signuphandler = async (e) => {
         e.preventDefault();
+        console.log("Signup form submitted");
         
         try {
-            setLoading(true)
+            setLoading(true);
             const res = await axios.post('http://localhost:8000/api/v1/user/register', input, {
                 headers: {
                     "Content-Type": "application/json"
                 },
                 withCredentials: true
             });
-            if (res.data.success) {
-                nagivate('/login');
-                toast.success(res.data.message)
+            if (res.data.Success) {
+                toast.success(res.data.message);
+                navigate('/login'); 
                 setInput({
                     username: '',
                     email: '',
                     password: ''
-                })
-            }
-
+                });
+            }  
         } catch (error) {
-            console.log(error)
-            toast.error(error.response.data.message)
+            console.log("Error during signup", error);
+            toast.error(error.response.data.message);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
+    
     return (
         <div className='flex h-screen w-screen items-center justify-center'>
             <form onSubmit={signuphandler} className='flex flex-col gap-5 p-8 shadow-lg'>

@@ -13,13 +13,13 @@ import { setPosts } from '@/Redux/postSlice';
 
 const CreatePost = ({ open, setOpen }) => {
   const imageref = useRef();
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState(null);
   const [caption, setCaption] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
-  const {user} =useSelector(store=>store.auth)
-  const dispatch =useDispatch()
-  const {posts} = useSelector(store=>store.post)
+  const { user } = useSelector(store => store.auth);
+  const dispatch = useDispatch();
+  const { posts } = useSelector(store => store.post);
 
   const eventFileHandler = async (e) => {
     const file = e.target.files?.[0];
@@ -36,8 +36,6 @@ const CreatePost = ({ open, setOpen }) => {
     formData.append('caption', caption);
     if (file) formData.append('image', file);
 
-    console.log([...formData]); // Logs form data to verify it contains the file and caption
-
     try {
       setLoading(true);
       const res = await axios.post('http://localhost:8000/api/v1/post/addPost', formData, {
@@ -48,9 +46,13 @@ const CreatePost = ({ open, setOpen }) => {
       });
 
       if (res.data.success) {
-        dispatch(setPosts([res.data.post,...posts]));
+        dispatch(setPosts([res.data.post, ...posts]));
         toast.success(res.data.message);
-        setOpen(false);  
+        // Clear the input fields and image preview
+        setCaption('');
+        setFile(null);
+        setImagePreview('');
+        setOpen(false);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || 'An unexpected error occurred.');
