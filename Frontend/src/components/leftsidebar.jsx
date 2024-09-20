@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
 import { Heart, Home, LogOut, MessageCircle, PlusCircle, Search, TrendingUp } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import store from '@/Redux/store';
@@ -40,6 +40,8 @@ const LeftSidebar = () => {
             logOuthandler();
         } else if (textType == 'Create') {
             setOpen(true)
+        } else if (textType== 'Profile'){
+            navigate(`/profile/${user?._id}`)
         }
     };
     const sidebarItems = [

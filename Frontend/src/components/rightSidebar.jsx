@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar';
 
 import { useSelector } from 'react-redux'
 import SuggestedUser from './ui/suggestedUser.jsx'
+// console.log(SuggestedUser)
 
 const rightSidebar = () => {
   const {user}=useSelector(store=>store.auth)
